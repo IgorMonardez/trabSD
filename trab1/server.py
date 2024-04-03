@@ -17,7 +17,7 @@ class MyService(rpyc.Service):
 
     exposed_the_real_answer_though = 43  # este é um atributo exposto
 
-    def exposed_get_question(self):  # este método não é exposto
+    def get_question(self):  # este método não é exposto
         return "Qual é a cor do cavalo branco de Napoleão?"
 
     def exposed_calcula_vetor(self, vetor):
