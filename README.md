@@ -11,4 +11,15 @@
             retorna 42.  
         - O terceiro valor é o resultado da chamada do acesso ao atributo the_real_answer_though (que está exposto) da 
             classe MyService, que retorna 43.
-2) 
+2) Questão 2:
+    Para rodar, basta fazer o seguinte, Na pasta trabSD:
+    - `python3 trab1/questao_1_2/server.py`
+    - `python3 trab1/questao_1_2/client.py localhost`
+
+   R: Executar o cliente mostra na linha de comando o seguinte: AttributeError: cannot access 'get_question'
+        - Isso acontece pois o método get_question no servidor não está exposto, ou seja, não é possível acessá-lo 
+            remotamente. No RPyC, apenas métodos e atributos com o prefixo 'exposed_' são acessíveis remotamente. 
+        - Portanto, para que o método get_question seja acessível remotamente, é necessário adicionar o prefixo 'exposed_', 
+            caso contrário, quando você tentar chamar o método get_question no cliente, você receberá
+            um AttributeError, visto que da perspectiva do cliente, o método não existe.
+3) Questão 3:
