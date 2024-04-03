@@ -1,7 +1,9 @@
 import random
+import time
 
 import rpyc
 
+start = time.time()
 conn = rpyc.connect('localhost', 18861)
 vetor = []
 tam_vetor = int(input('Digite o tamanho do vetor'))
@@ -11,3 +13,5 @@ for i in range(tam_vetor):
 
 print(vetor)
 print(f'Soma = {conn.root.calcula_vetor(vetor)}')
+end = time.time()
+print(f'Tempo = {end-start}')
