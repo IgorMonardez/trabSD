@@ -2,6 +2,8 @@ import rpyc
 
 
 class MyService(rpyc.Service):
+
+    vetor = []
     def on_connect(self, conn):
         # código que é executado quando uma conexão é iniciada, casoseja necessário
         pass
@@ -15,8 +17,13 @@ class MyService(rpyc.Service):
 
     exposed_the_real_answer_though = 43  # este é um atributo exposto
 
-    def get_question(self):  # este método não é exposto
+    def exposed_get_question(self):  # este método não é exposto
         return "Qual é a cor do cavalo branco de Napoleão?"
+
+    def exposed_calcula_vetor(self, vetor):
+        soma = sum(vetor)
+        print(soma)
+        return soma
 
 
 # Para iniciar o servidor
