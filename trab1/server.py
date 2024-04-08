@@ -23,9 +23,10 @@ class MyService(rpyc.Service):
 
     def exposed_soma_vetor(self, vetor):
         start = time.time()
+        soma = sum(vetor)
         end = time.time()
         print(f"Tempo de execução no servidor: {end - start} segundos.")
-        return sum(vetor)
+        return soma
 
 
 # Para iniciar o servidor
