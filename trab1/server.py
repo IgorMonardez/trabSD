@@ -20,10 +20,8 @@ class MyService(rpyc.Service):
     def get_question(self):  # este método não é exposto
         return "Qual é a cor do cavalo branco de Napoleão?"
 
-    def exposed_calcula_vetor(self, vetor):
-        soma = sum(vetor)
-        print(soma)
-        return soma
+    def exposed_soma_vetor(self, vetor):
+        return sum(vetor)
 
 
 # Para iniciar o servidor
