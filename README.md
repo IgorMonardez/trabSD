@@ -73,3 +73,12 @@
        1000: Tempo no servidor (1.9199988842010498 segundos) - Tempo no cliente (1.973506212234497 segundos)
        10000: Tempo no servidor (17.598012924194336 segundos) - Tempo no cliente (17.65381097793579 segundos)
 10) Questão 10:
+    R: Sim, existe diferença entre os tempos. Essa diferença ocorre devido a latência da rede, que é o tempo que um pacote 
+       de dados leva para ir de um ponto a outro. A latência é um fator que influencia diretamente no tempo de execução de 
+       uma aplicação distribuída, pois a comunicação entre os dois pontos é feita através de pacotes de dados, e quanto maior 
+       a latência, maior será o tempo de execução da aplicação. No caso em que o cliente e o servidor estão na mesma máquina,
+       a latência é praticamente zero, pois a comunicação é feita internamente, e por isso o tempo de execução é menor. Já no
+       caso em que o cliente e o servidor estão em máquinas diferentes, a latência é maior, pois os dados devem ser enviados
+       através da rede. Essa comunicação envolve as etapas de roteamento, transmissão e recepção dos pacotes de dados, e por isso
+       um pequeno delay é adicionado e o tempo de execução é maior. Se fizermos o cálculo do tempo de execução do cliente em uma máquina diferente
+       sobre o tempo de execução do cliente na mesma máquina, obtemos o que executar o cliente no máquina é cerca de 13 a 16 vezes mais rápido:
