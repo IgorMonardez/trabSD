@@ -55,4 +55,21 @@
     R: O tempo de execução no servidor foi de aproximadamente 17.61s, e no cliente é de aproximadamente 17.62s. É importante
        ressaltar que o tempo de execução no cliente é praticamente o mesmo que no servidor, pois o cliente está aguardando o
        servidor realizar a soma dos elementos do vetor, essa diferença de tempo é devido a comunicação entre os dois.
-7) 
+7) Questão 7:
+    R: Sim, existe diferença entre os tempos. Essa diferença ocorre devido a latência da rede, que é o tempo que um pacote 
+       de dados leva para ir de um ponto a outro. A latência é um fator que influencia diretamente no tempo de execução de 
+       uma aplicação distribuída, pois a comunicação entre os dois pontos é feita através de pacotes de dados, e quanto maior 
+       a latência, maior será o tempo de execução da aplicação. No caso em que o cliente e o servidor estão na mesma máquina,
+       a latência é praticamente zero, pois a comunicação é feita internamente, e por isso o tempo de execução é menor. Já no
+       caso em que o cliente e o servidor estão em máquinas diferentes, a latência é maior, pois os dados devem ser enviados
+       através da rede. Essa comunicação envolve as etapas de roteamento, transmissão e recepção dos pacotes de dados, e por isso
+       um pequeno delay é adicionado e o tempo de execução é maior.
+8) Questão 8:
+    R: 100: Tempo no servidor (0.010861635208129883 segundos) - Tempo no cliente (0.012281417846679688 segundos)
+       1000: Tempo no servidor (0.11168265342712402 segundos) - Tempo no cliente (0.15252399444580078 segundos)
+       10000: Tempo no servidor (1.0605075359344482 segundos) - Tempo no cliente (1.0613324642181396 segundos)
+9) Questão 9:
+    R: 100: Tempo no servidor (0. segundos) - Tempo no cliente (0.17054128646850586 segundos)
+       1000: Tempo no servidor (1. segundos) - Tempo no cliente (1.973506212234497 segundos)
+       10000: Tempo no servidor (17. segundos) - Tempo no cliente (17.65381097793579 segundos)
+10) Questão 10:
