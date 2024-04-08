@@ -1,4 +1,5 @@
 import rpyc
+import time
 
 
 class MyService(rpyc.Service):
@@ -21,6 +22,9 @@ class MyService(rpyc.Service):
         return "Qual é a cor do cavalo branco de Napoleão?"
 
     def exposed_soma_vetor(self, vetor):
+        start = time.time()
+        end = time.time()
+        print(f"Tempo de execução no servidor: {end - start} segundos.")
         return sum(vetor)
 
 

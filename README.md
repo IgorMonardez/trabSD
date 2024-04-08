@@ -1,6 +1,6 @@
 1) Questão 1:
    Para rodar, basta fazer o seguinte, Na pasta trabSD:
-    - `python3 trab1/questao_1/server.py`
+    - `python3 trab1/server.py`
     - `python3 trab1/questao_1/client.py`
 
     R: conn = rpyc.connect(server, 18861) é responsável por realizar a conexão com o servidor, que é representado pela 
@@ -13,7 +13,7 @@
           classe MyService, que retorna 43.
 2) Questão 2:
     Para rodar, basta fazer o seguinte, Na pasta trabSD:
-    - `python3 trab1/questao_2/server.py`
+    - `python3 trab1/server.py`
     - `python3 trab1/questao_2/client.py`
 
    R: Executar o cliente mostra na linha de comando o seguinte: AttributeError: cannot access 'get_question'
@@ -24,11 +24,30 @@
           um AttributeError, visto que da perspectiva do cliente, o método não existe.
 3) Questão 3:
     Para rodar, basta fazer o seguinte, Na pasta trabSD:
-    - `python3 trab1/questao_3/server.py`
+    - `python3 trab1/server.py`
     - `python3 trab1/questao_3/client.py`
 
     R: Ocorreu o esperado: 
        - Ao executar o client, é requisitado a entrada do tamanho do vetor, e em seguida, o vetor é criado pelo cliente. 
        - Depois, é chamado a função para calcular a soma do vetor no servidor (método exposto), e o servidor retorna a 
          soma corretamente.
-4) 
+4) Questão 4: 
+    Para rodar, basta fazer o seguinte, Na pasta trabSD:
+    - `python3 trab1/server.py`
+    - `python3 trab1/questao_4/client.py`
+
+    R: O código da modificação solicitada se trata das funções cria_vetor e soma_vetor no cliente, e o método soma_vetor 
+       no servidor.
+5) Questão 5: 
+    Para rodar, basta fazer o seguinte na mesma máquina, Na pasta trabSD:
+    - `python3 trab1/server.py`
+    - `python3 trab1/questao_5/client.py`
+
+    R: O tempo de execução no servidor é praticamente zero, e no cliente é de aproximadamente 1 segundo.
+6) Questão 6: 
+    Para rodar, basta fazer o seguinte, na pasta trabSD execute o primeiro comando na máquina servidor e 
+    o segundo na máquina cliente. Os dois devem estar na mesma rede:
+    - `python3 trab1/server.py`
+    - `python3 trab1/questao_6/client.py`
+
+    R: O tempo de execução no servidor é praticamente zero, e no cliente é de aproximadamente 1 segundo.
