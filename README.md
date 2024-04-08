@@ -43,11 +43,16 @@
     - `python3 trab1/server.py`
     - `python3 trab1/questao_5/client.py`
 
-    R: O tempo de execução no servidor é praticamente zero, e no cliente é de aproximadamente 1 segundo.
+    R: O tempo de execução no servidor é de 1.032s, e no cliente é de aproximadamente 1.033s. É importante
+       ressaltar que o tempo de execução no cliente é praticamente o mesmo que no servidor, pois o cliente está aguardando o
+       servidor realizar a soma dos elementos do vetor, essa diferença de tempo é devido a comunicação entre os dois.
 6) Questão 6: 
     Para rodar, basta fazer o seguinte, na pasta trabSD execute o primeiro comando na máquina servidor e 
-    o segundo na máquina cliente. Os dois devem estar na mesma rede:
+    o segundo na máquina cliente. Os dois devem estar na mesma rede. Lembre de mudar o IP no client.py para o IP do servidor:
     - `python3 trab1/server.py`
     - `python3 trab1/questao_6/client.py`
 
-    R: O tempo de execução no servidor é praticamente zero, e no cliente é de aproximadamente 1 segundo.
+    R: O tempo de execução no servidor foi de aproximadamente 17.61s, e no cliente é de aproximadamente 17.62s. É importante
+       ressaltar que o tempo de execução no cliente é praticamente o mesmo que no servidor, pois o cliente está aguardando o
+       servidor realizar a soma dos elementos do vetor, essa diferença de tempo é devido a comunicação entre os dois.
+7) 
