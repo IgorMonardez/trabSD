@@ -69,7 +69,7 @@
        1000: Tempo no servidor (0.11168265342712402 segundos) - Tempo no cliente (0.15252399444580078 segundos)
        10000: Tempo no servidor (1.0605075359344482 segundos) - Tempo no cliente (1.0613324642181396 segundos)
 9) Questão 9:
-    R: 100: Tempo no servidor (0. segundos) - Tempo no cliente (0.17054128646850586 segundos)
-       1000: Tempo no servidor (1. segundos) - Tempo no cliente (1.973506212234497 segundos)
-       10000: Tempo no servidor (17. segundos) - Tempo no cliente (17.65381097793579 segundos)
+    R: 100: Tempo no servidor (0.15998458862304688 segundos) - Tempo no cliente (0.17054128646850586 segundos)
+       1000: Tempo no servidor (1.9199988842010498 segundos) - Tempo no cliente (1.973506212234497 segundos)
+       10000: Tempo no servidor (17.598012924194336 segundos) - Tempo no cliente (17.65381097793579 segundos)
 10) Questão 10:
