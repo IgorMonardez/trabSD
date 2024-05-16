@@ -1,7 +1,7 @@
 import time
 import rpyc
 
-conn = rpyc.connect('192.168.1.1', 18861)
+conn = rpyc.connect('localhost', 18861)
 
 def cria_vetor_100():
     n = 100
