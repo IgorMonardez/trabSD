@@ -394,33 +394,30 @@ func (rf *Raft) becomeLeader() {
 }
 
 func (rf *Raft) doAsLeader() {
-	// Enviar AppendEntries periodicamente //
-	var wg = sync.WaitGroup{}
 	for i := range rf.peers {
 		if i != rf.me {
-			wg.Add(1)
-			go func(i int) {
-				defer wg.Done()
-
-				rf.mu.Lock()
-				args := AppendEntriesArgs{
-					Term:         rf.currentTerm,
-					LeaderId:     rf.me,
-					PrevLogIndex: rf.nextIndex[i] - 1,
-				}
-				args.PrevLogTerm = rf.log[args.PrevLogIndex].Term
-				args.Entries = make([]LogEntry, len(rf.log[rf.nextIndex[i]:]))
-				copy(args.Entries, rf.log[rf.nextIndex[i]:])
-				args.LeaderCommit = rf.commitIndex
-				rf.mu.Unlock()
-
-				var reply AppendEntriesReply
-				go rf.sendAppendEntries(i, args, &reply)
-			}(i)
+			go rf.sendEntriesToPeer(i)
 		}
 	}
+
 	// Enviar heartbeats periodicamente //
 	time.Sleep(DefaultHeartbeatInterval)
+}
+
+func (rf *Raft) sendEntriesToPeer(i int) {
+	rf.mu.Lock()
+	args := AppendEntriesArgs{
+		Term:         rf.currentTerm,
+		LeaderId:     rf.me,
+		PrevLogIndex: rf.nextIndex[i] - 1,
+		PrevLogTerm:  rf.log[rf.nextIndex[i]-1].Term,
+		Entries:      append([]LogEntry{}, rf.log[rf.nextIndex[i]:]...),
+		LeaderCommit: rf.commitIndex,
+	}
+	rf.mu.Unlock()
+
+	var reply AppendEntriesReply
+	go rf.sendAppendEntries(i, args, &reply)
 }
 
 func (rf *Raft) stateLoop() {
