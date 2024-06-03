@@ -91,8 +91,9 @@ type AppendEntriesReply struct {
 func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isLeader bool
-
+	// TODO: CONDICAO DE CORRIDA
 	term = rf.currentTerm
+	// TODO: CONDICAO DE CORRIDA
 	isLeader = rf.state == StateLeader
 
 	return term, isLeader
@@ -138,6 +139,7 @@ func (rf *Raft) RequestVote(args RequestVoteArgs, reply *RequestVoteReply) {
 	// entao setar o currentTerm = T e converter para seguidor                    //
 	if args.Term > rf.currentTerm {
 		rf.currentTerm = args.Term
+		// TODO: RACE
 		rf.state = StateFollower
 		rf.votedFor = -1 // new term, reset votedFor
 	}
@@ -335,6 +337,7 @@ func (rf *Raft) doAsFollower() {
 	electionTimeout := rand.Intn(DefaultElectionTimeoutRange) + DefaultElectionTimeoutMin
 
 	select {
+	// TODO: CONDICAO DE CORRIDA
 	case <-time.After(time.Duration(electionTimeout) * time.Millisecond):
 		// Qualquer msg que nao chegou e timeout do tempo de eleicao -- virar candidato //
 		rf.state = StateCandidate
@@ -420,6 +423,7 @@ func (rf *Raft) doAsLeader() {
 }
 
 func (rf *Raft) stateLoop() {
+	// TODO: CONDICAO DE CORRIDA
 	for {
 		switch rf.state {
 		case StateFollower:
