@@ -446,31 +446,27 @@ func (rf *Raft) Kill() {
 	// Your code here, if desired.
 }
 
-func Make(peers []*labrpc.ClientEnd, me int,
-	persister *Persister, applyCh chan ApplyMsg) *Raft {
-	rf := &Raft{}
-	rf.peers = peers
-	rf.persister = persister
-	rf.me = me
+func Make(peers []*labrpc.ClientEnd, me int, persister *Persister, applyCh chan ApplyMsg) *Raft {
+	rf := &Raft{
+		peers:              peers,
+		persister:          persister,
+		me:                 me,
+		state:              StateFollower,
+		currentTerm:        0,
+		votedFor:           -1,
+		votes:              0,
+		appendEntriesRec:   make(chan bool, DefaultChannelBufferSize),
+		requestVoteReplied: make(chan bool, DefaultChannelBufferSize),
+		winner:             make(chan bool, DefaultChannelBufferSize),
+		commandApplied:     applyCh,
+		log:                []LogEntry{{Term: 0, Command: -1}},
+		commitIndex:        0,
+		lastApplied:        0,
+	}
 
-	rf.state = StateFollower
-	rf.currentTerm = 0
-	rf.votedFor = -1
-	rf.votes = 0
-	rf.appendEntriesRec = make(chan bool, DefaultChannelBufferSize)
-	rf.requestVoteReplied = make(chan bool, DefaultChannelBufferSize)
-	rf.winner = make(chan bool, DefaultChannelBufferSize)
-	rf.commandApplied = applyCh
-
-	rf.log = []LogEntry{{Term: 0, Command: -1}}
-	rf.commitIndex = 0
-	rf.lastApplied = 0
-
-	// Corrigir tempo para windows //
 	rand.Seed(time.Now().UnixNano() + int64(rf.me))
 	go rf.stateLoop()
 
-	// Inicializar a partir do estado persistente antes de uma falha  //
 	rf.readPersist(persister.ReadRaftState())
 
 	return rf
