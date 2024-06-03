@@ -18,10 +18,10 @@ const (
 
 // Tempos de eleicao //
 const (
-	DefaultElectionTimeoutMin   = 150
-	DefaultElectionTimeoutMax   = 300
+	DefaultElectionTimeoutMin   = 200
+	DefaultElectionTimeoutMax   = 350
 	DefaultElectionTimeoutRange = DefaultElectionTimeoutMax - DefaultElectionTimeoutMin
-	DefaultHeartbeatInterval    = 50
+	DefaultHeartbeatInterval    = 130 * time.Millisecond
 	DefaultChannelBufferSize    = 20
 )
 
@@ -391,23 +391,32 @@ func (rf *Raft) doAsCandidate() {
 
 func (rf *Raft) doAsLeader() {
 	// Enviar AppendEntries periodicamente //
+	var wg = sync.WaitGroup{}
 	for i := range rf.peers {
 		if i != rf.me {
-			var args AppendEntriesArgs
-			args.Term = rf.currentTerm
-			args.LeaderId = rf.me
-			args.PrevLogIndex = rf.nextIndex[i] - 1
-			args.PrevLogTerm = rf.log[args.PrevLogIndex].Term
-			args.Entries = make([]LogEntry, len(rf.log[rf.nextIndex[i]:]))
-			copy(args.Entries, rf.log[rf.nextIndex[i]:])
-			args.LeaderCommit = rf.commitIndex
+			wg.Add(1)
+			go func(i int) {
+				defer wg.Done()
 
-			var reply AppendEntriesReply
-			go rf.sendAppendEntries(i, args, &reply)
+				rf.mu.Lock()
+				args := AppendEntriesArgs{
+					Term:         rf.currentTerm,
+					LeaderId:     rf.me,
+					PrevLogIndex: rf.nextIndex[i] - 1,
+				}
+				args.PrevLogTerm = rf.log[args.PrevLogIndex].Term
+				args.Entries = make([]LogEntry, len(rf.log[rf.nextIndex[i]:]))
+				copy(args.Entries, rf.log[rf.nextIndex[i]:])
+				args.LeaderCommit = rf.commitIndex
+				rf.mu.Unlock()
+
+				var reply AppendEntriesReply
+				go rf.sendAppendEntries(i, args, &reply)
+			}(i)
 		}
 	}
 	// Enviar heartbeats periodicamente //
-	time.Sleep(DefaultHeartbeatInterval * time.Millisecond)
+	time.Sleep(DefaultHeartbeatInterval)
 }
 
 func (rf *Raft) stateLoop() {
