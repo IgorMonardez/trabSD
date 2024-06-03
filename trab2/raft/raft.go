@@ -351,41 +351,46 @@ func (rf *Raft) doAsCandidate() {
 	rf.votes = 1
 	rf.persist()
 	rf.mu.Unlock()
-	// Enviar RPCs de RequestVote para todos os outros servidores //
-	go func() {
-		var args RequestVoteArgs
-		rf.mu.Lock()
-		args.Term = rf.currentTerm
-		args.CandidateId = rf.me
-		args.LastLogTerm = rf.GetLastEntryTerm()
-		args.LastLogIndex = rf.GetLastEntryIndex()
-		rf.mu.Unlock()
-		for i := range rf.peers {
-			if i != rf.me {
-				var reply RequestVoteReply
-				go rf.sendRequestVote(i, args, &reply)
-			}
-		}
-	}()
+
+	// Envia RPCs de RequestVote para todos os outros nós //
+	go rf.sendVoteRequests()
+
 	electionTimeout := rand.Intn(DefaultElectionTimeoutRange) + DefaultElectionTimeoutMin
 	select {
-	case <-rf.winner:
-		// Caso receba a maioria dos votos //
-		rf.mu.Lock()
-		rf.state = StateLeader
-		rf.nextIndex = make([]int, len(rf.peers))
-		rf.matchIndex = make([]int, len(rf.peers))
-		for i := 0; i < len(rf.peers); i++ {
-			rf.nextIndex[i] = rf.GetLastEntryIndex() + 1
-			rf.matchIndex[i] = 0
-		}
-		rf.mu.Unlock()
-	case <-rf.appendEntriesRec:
-		// Se RPC receber do novo lider entao converter para seguidor //
+	case <-rf.winner: // Se torna líder
+		rf.becomeLeader()
+	case <-rf.appendEntriesRec: // Se receber algo no canal appendEntriesRec, tem um novo líder e se torna seguidor
 		rf.state = StateFollower
-	case <-time.After(time.Duration(electionTimeout) * time.Millisecond):
-		// Se o tempo de eleicao termina, entao comecar nova eleicao //
+	case <-time.After(time.Duration(electionTimeout) * time.Millisecond): // O tempo de eleição expirou, o que iniciará uma nova eleição
 	}
+}
+
+func (rf *Raft) sendVoteRequests() {
+	var args RequestVoteArgs
+	rf.mu.Lock()
+	args.Term = rf.currentTerm
+	args.CandidateId = rf.me
+	args.LastLogTerm = rf.GetLastEntryTerm()
+	args.LastLogIndex = rf.GetLastEntryIndex()
+	rf.mu.Unlock()
+	for i := range rf.peers {
+		if i != rf.me {
+			var reply RequestVoteReply
+			go rf.sendRequestVote(i, args, &reply)
+		}
+	}
+}
+
+func (rf *Raft) becomeLeader() {
+	rf.mu.Lock()
+	rf.state = StateLeader
+	rf.nextIndex = make([]int, len(rf.peers))
+	rf.matchIndex = make([]int, len(rf.peers))
+	for i := 0; i < len(rf.peers); i++ {
+		rf.nextIndex[i] = rf.GetLastEntryIndex() + 1
+		rf.matchIndex[i] = 0
+	}
+	rf.mu.Unlock()
 }
 
 func (rf *Raft) doAsLeader() {
