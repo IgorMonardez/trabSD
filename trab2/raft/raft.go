@@ -16,12 +16,11 @@ const (
 	StateLeader
 )
 
-// Tempos de eleicao //
 const (
-	DefaultElectionTimeoutMin   = 200
+	DefaultElectionTimeoutMin   = 100
 	DefaultElectionTimeoutMax   = 350
 	DefaultElectionTimeoutRange = DefaultElectionTimeoutMax - DefaultElectionTimeoutMin
-	DefaultHeartbeatInterval    = 130 * time.Millisecond
+	DefaultHeartbeatInterval    = 100 * time.Millisecond
 	DefaultChannelBufferSize    = 20
 )
 
@@ -331,17 +330,14 @@ func (rf *Raft) sendAppendEntries(server int, args AppendEntriesArgs, reply *App
 }
 
 func (rf *Raft) doAsFollower() {
-	// Tempo de eleicao randomizado //
 	electionTimeout := rand.Intn(DefaultElectionTimeoutRange) + DefaultElectionTimeoutMin
+	timeout := time.After(time.Duration(electionTimeout) * time.Millisecond)
 
 	select {
-	case <-time.After(time.Duration(electionTimeout) * time.Millisecond):
-		// Qualquer msg que nao chegou e timeout do tempo de eleicao -- virar candidato //
+	case <-timeout:
 		rf.state = StateCandidate
 	case <-rf.requestVoteReplied:
-		// Servidor votou em outro servidor //
 	case <-rf.appendEntriesRec:
-		// Lider esta vivo //
 	}
 }
 
