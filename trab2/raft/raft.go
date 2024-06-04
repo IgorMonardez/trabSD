@@ -165,27 +165,21 @@ func (rf *Raft) sendRequestVote(server int, args RequestVoteArgs, reply *Request
 	ok := rf.peers[server].Call("Raft.RequestVote", args, reply)
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	if ok {
-		// Caso a requisicao ou resposta RPC tem o termo maior que o termo atual //
-		// entao setar currentTerm = T, e converter para seguidor                //
-		if reply.Term > rf.currentTerm {
-			rf.currentTerm = reply.Term
-			rf.state = StateFollower
-			rf.votedFor = -1
-			rf.persist()
-			return ok
-		}
-		if rf.state == StateCandidate {
-			if reply.VoteGranted {
-				rf.votes++
-				if rf.votes > (len(rf.peers) / 2) {
-					rf.winner <- true
-				}
-			}
-		}
 
-		return ok
+	if ok && reply.Term > rf.currentTerm {
+		rf.currentTerm = reply.Term
+		rf.state = StateFollower
+		rf.votedFor = -1
+		rf.persist()
 	}
+
+	if ok && rf.state == StateCandidate && reply.VoteGranted {
+		rf.votes++
+		if rf.votes > len(rf.peers)/2 {
+			rf.winner <- true
+		}
+	}
+
 	return ok
 }
 
