@@ -268,67 +268,79 @@ func (rf *Raft) sendAppendEntries(server int, args AppendEntriesArgs, reply *App
 	ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	if ok {
-		// Se a requisicao ou a resposta RPC contem um termo maior que o currentTerm, entao //
-		// atualizar o termo e virar seguidor                                              //
-		if reply.Term > rf.currentTerm {
-			rf.currentTerm = reply.Term
-			rf.state = StateFollower
-			rf.votedFor = -1
-			rf.persist()
-			return ok
-		}
-		if rf.state == StateLeader {
-			if reply.Success {
-				// Atualizar o nextIndex e matchIndex //
-				rf.nextIndex[server] = rf.GetLastEntryIndex() + 1
-				rf.matchIndex[server] = rf.GetLastEntryIndex()
-				// Se existir um N tal que N > commitIndex //
-				for N := rf.commitIndex + 1; N < len(rf.log); N++ {
-					count := 1
-					foundN := false
-					for _, v := range rf.matchIndex {
-						if v >= N {
-							count++
-						}
-						if count > len(rf.peers)/2 && rf.log[N].Term == rf.currentTerm {
-							rf.commitIndex = N
-							foundN = true
-							break
-						}
-					}
-					if foundN {
-						break
-					}
-				}
-				for i := rf.lastApplied + 1; i <= rf.commitIndex; i++ {
-					msg := ApplyMsg{
-						Index:   i,
-						Command: rf.log[i].Command,
-					}
-					rf.commandApplied <- msg
-				}
-				rf.lastApplied = rf.commitIndex
-			} else {
-				// Inconsistencia no log //
-				if reply.ConflictTerm == -1 {
-					rf.nextIndex[server] = reply.ConflictIndex
-				} else {
-					var i int
-					for i = len(rf.log) - 1; i >= 0; i-- {
-						if rf.log[i].Term == reply.ConflictTerm {
-							rf.nextIndex[server] = i + 1
-							break
-						}
-					}
-					if i == -1 {
-						rf.nextIndex[server] = reply.ConflictIndex
-					}
-				}
-			}
+
+	if !ok || reply.Term <= rf.currentTerm {
+		return ok
+	}
+
+	rf.currentTerm = reply.Term
+	rf.state = StateFollower
+	rf.votedFor = -1
+	rf.persist()
+
+	if rf.state != StateLeader {
+		return ok
+	}
+
+	if reply.Success {
+		rf.updateIndexesAndCommit(server)
+	} else {
+		rf.handleLogInconsistency(server, reply)
+	}
+
+	return ok
+}
+
+func (rf *Raft) updateIndexesAndCommit(server int) {
+	rf.nextIndex[server] = rf.GetLastEntryIndex() + 1
+	rf.matchIndex[server] = rf.GetLastEntryIndex()
+
+	for N := rf.commitIndex + 1; N < len(rf.log); N++ {
+		if rf.updateCommitIndex(N) {
+			break
 		}
 	}
-	return ok
+
+	for i := rf.lastApplied + 1; i <= rf.commitIndex; i++ {
+		msg := ApplyMsg{
+			Index:   i,
+			Command: rf.log[i].Command,
+		}
+		rf.commandApplied <- msg
+	}
+	rf.lastApplied = rf.commitIndex
+}
+
+func (rf *Raft) updateCommitIndex(N int) bool {
+	count := 1
+	for _, v := range rf.matchIndex {
+		if v >= N {
+			count++
+		}
+		if count > len(rf.peers)/2 && rf.log[N].Term == rf.currentTerm {
+			rf.commitIndex = N
+			return true
+		}
+	}
+	return false
+}
+
+func (rf *Raft) handleLogInconsistency(server int, reply *AppendEntriesReply) {
+	if reply.ConflictTerm == -1 {
+		rf.nextIndex[server] = reply.ConflictIndex
+	} else {
+		rf.updateNextIndex(server, reply)
+	}
+}
+
+func (rf *Raft) updateNextIndex(server int, reply *AppendEntriesReply) {
+	for i := len(rf.log) - 1; i >= 0; i-- {
+		if rf.log[i].Term == reply.ConflictTerm {
+			rf.nextIndex[server] = i + 1
+			return
+		}
+	}
+	rf.nextIndex[server] = reply.ConflictIndex
 }
 
 func (rf *Raft) doAsFollower() {
@@ -400,7 +412,7 @@ func (rf *Raft) doAsLeader() {
 		}
 	}
 
-	// Enviar heartbeats periodicamente //
+	// Envia heartbeats periodicamente //
 	time.Sleep(DefaultHeartbeatInterval)
 }
 
