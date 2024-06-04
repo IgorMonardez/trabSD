@@ -128,36 +128,29 @@ func (rf *Raft) RequestVote(args RequestVoteArgs, reply *RequestVoteReply) {
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 	defer rf.persist()
-	// Retornar falso quando o termo for menor do que o termo do atual //
+
+	reply.Term = rf.currentTerm
+	reply.VoteGranted = false
+
+	// Retorna falso quando o termo for menor do que o termo do atual
 	if args.Term < rf.currentTerm {
-		reply.Term = rf.currentTerm
-		reply.VoteGranted = false
 		return
 	}
-	// Caso a requisicao ou resposta RPC conter um termo maior que o termo atual  //
-	// entao setar o currentTerm = T e converter para seguidor                    //
+
+	// Se a requisicao ou resposta RPC possuir um termo maior que o termo atual, então o currentTerm = T e vira seguidor
 	if args.Term > rf.currentTerm {
 		rf.currentTerm = args.Term
-		// TODO: RACE
 		rf.state = StateFollower
-		rf.votedFor = -1 // new term, reset votedFor
+		rf.votedFor = -1
 	}
 
-	// Se votedFor eh null ou igual ao CandidateId,                   //
-	// e o log do candidato eh pelo menos igual ao log do recebedor   //
-	// entao dar o voto                                               //
+	// Se o candidato tem um log mais atualizado, entao votar no candidato
 	if (rf.votedFor == -1 || rf.votedFor == args.CandidateId) &&
 		(args.LastLogTerm > rf.GetLastEntryTerm() ||
-			args.LastLogTerm == rf.GetLastEntryTerm() && args.LastLogIndex >= rf.GetLastEntryIndex()) {
-		rf.state = StateFollower
+			(args.LastLogTerm == rf.GetLastEntryTerm() && args.LastLogIndex >= rf.GetLastEntryIndex())) {
 		rf.votedFor = args.CandidateId
-		reply.Term = rf.currentTerm
 		reply.VoteGranted = true
-
 		rf.requestVoteReplied <- true
-	} else {
-		reply.Term = rf.currentTerm
-		reply.VoteGranted = false
 	}
 }
 
@@ -187,74 +180,41 @@ func (rf *Raft) AppendEntries(args AppendEntriesArgs, reply *AppendEntriesReply)
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 	defer rf.persist()
-	// Retornar falso se o termo for menor que o termo atual //
+
+	reply.Term = rf.currentTerm
+	reply.Success = false
+
+	// Retorna falso se o termo for menor que o termo atual
 	if args.Term < rf.currentTerm {
-		reply.Term = rf.currentTerm
-		reply.Success = false
 		return
 	}
-	rf.appendEntriesRec <- true
-	// Se a requisicao ou a resposta RPC contem um termo maior que o currentTerm, entao //
-	// atualizar o termo e virar seguidor                                              //
+
+	// Se a requisicao ou a resposta RPC contem um termo maior que o currentTerm, entao atualiza o termo e vira seguidor                                              //
 	if args.Term > rf.currentTerm {
 		rf.currentTerm = args.Term
 		rf.state = StateFollower
-		rf.votedFor = -1 // resetar pois tem novo termo //
+		rf.votedFor = -1
 	}
-	reply.Term = args.Term
-	// Retorna falso se o log nao contem uma entrada prevLogIndex que bate com o termo //
+
 	if rf.GetLastEntryIndex() < args.PrevLogIndex || rf.log[args.PrevLogIndex].Term != args.PrevLogTerm {
-		reply.Success = false
-
-		// Se o seguidor nao tem um prevLogIndex no log //
-		if rf.GetLastEntryIndex() < args.PrevLogIndex {
-			reply.ConflictIndex = len(rf.log)
-			reply.ConflictTerm = -1 // sem entradas, entao é invalido //
-		} else if rf.log[args.PrevLogIndex].Term != args.PrevLogTerm {
-
-			// Se tiver o mesmo index mas nao o mesmo termo //
-			reply.ConflictTerm = rf.log[args.PrevLogIndex].Term
-
-			// Procurar pelo primeiro index com o mesmo termo conflictTerm //
-			for i := args.PrevLogIndex - 1; i > 0; i-- {
-				if rf.log[args.PrevLogIndex].Term != rf.log[i].Term {
-					reply.ConflictIndex = i + 1
-					break
-				}
-			}
+		reply.ConflictIndex = max(args.PrevLogIndex, len(rf.log))
+		reply.ConflictTerm = -1
+		if reply.ConflictIndex < len(rf.log) {
+			reply.ConflictTerm = rf.log[reply.ConflictIndex].Term
 		}
 		return
 	}
 
-	// Caso uma entrada existente conflite com uma nova de mesmo index e termos diferentes,  //
-	// entao deletar a entrada existente e todas que subsequentes                            //
-	var i int
-	for i = args.PrevLogIndex + 1; i <= rf.GetLastEntryIndex() && i-args.PrevLogIndex-1 < len(args.Entries); i++ {
-		if rf.log[i].Term != args.Entries[i-args.PrevLogIndex-1].Term {
-			rf.log = rf.log[:i]
-			break
-		}
-	}
-	rf.log = append(rf.log, args.Entries[i-args.PrevLogIndex-1:]...)
-	rf.persist()
-	// Caso LeaderCommit > commitIndex, entao setar commitIndex como min(LeaderCommit, index da ultima entrada) //
+	rf.log = append(rf.log[:args.PrevLogIndex+1], args.Entries...)
+
 	if args.LeaderCommit > rf.commitIndex {
-
-		if args.LeaderCommit < rf.GetLastEntryIndex() {
-			rf.commitIndex = args.LeaderCommit
-		} else {
-			rf.commitIndex = rf.GetLastEntryIndex()
-		}
-
-		for i = rf.lastApplied + 1; i <= rf.commitIndex; i++ {
-			msg := ApplyMsg{
-				Index:   i,
-				Command: rf.log[i].Command,
-			}
-			rf.commandApplied <- msg
+		rf.commitIndex = min(args.LeaderCommit, rf.GetLastEntryIndex())
+		for i := rf.lastApplied + 1; i <= rf.commitIndex; i++ {
+			rf.commandApplied <- ApplyMsg{Index: i, Command: rf.log[i].Command}
 		}
 		rf.lastApplied = rf.commitIndex
 	}
+
 	reply.Success = true
 }
 
@@ -427,9 +387,11 @@ func (rf *Raft) sendEntriesToPeer(i int) {
 }
 
 func (rf *Raft) stateLoop() {
-	// TODO: CONDICAO DE CORRIDA
 	for {
-		switch rf.state {
+		rf.mu.Lock()
+		state := rf.state
+		rf.mu.Unlock()
+		switch state {
 		case StateFollower:
 			rf.doAsFollower()
 		case StateCandidate:
