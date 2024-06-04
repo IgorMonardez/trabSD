@@ -185,18 +185,23 @@ func (rf *Raft) AppendEntries(args AppendEntriesArgs, reply *AppendEntriesReply)
 	reply.Term = rf.currentTerm
 	reply.Success = false
 
-	// Retorna falso se o termo for menor que o termo atual
+	// Retornar falso se o termo for menor que o termo atual //
 	if args.Term < rf.currentTerm {
 		return
 	}
 
-	// Se a requisicao ou a resposta RPC contem um termo maior que o currentTerm, entao atualiza o termo e vira seguidor                                              //
+	rf.appendEntriesRec <- true
+
+	// Se a requisicao ou resposta RPC possuir um termo maior que o termo atual, então o currentTerm = T e vira seguidor
 	if args.Term > rf.currentTerm {
 		rf.currentTerm = args.Term
 		rf.state = StateFollower
 		rf.votedFor = -1
 	}
 
+	reply.Term = args.Term
+
+	// Retorna falso se o log nao contem uma entrada prevLogIndex que bate com o termo //
 	if rf.GetLastEntryIndex() < args.PrevLogIndex || rf.log[args.PrevLogIndex].Term != args.PrevLogTerm {
 		reply.ConflictIndex = max(args.PrevLogIndex, len(rf.log))
 		reply.ConflictTerm = -1
@@ -303,9 +308,10 @@ func (rf *Raft) doAsFollower() {
 	timeout := time.After(time.Duration(electionTimeout) * time.Millisecond)
 
 	select {
-	// TODO: CONDICAO DE CORRIDA
 	case <-timeout:
+		rf.mu.Lock() // acquire write lock
 		rf.state = StateCandidate
+		rf.mu.Unlock() // release write lock
 	case <-rf.requestVoteReplied:
 	case <-rf.appendEntriesRec:
 	}
