@@ -1,43 +1,35 @@
 Test (2A): initial election ...
 ==================
 WARNING: DATA RACE
-Read at 0x00c00010f310 by goroutine 7:
-  raft.(*Raft).GetState()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:94 +0x2b4
-  raft.(*config).checkOneLeader()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:30 +0xd9
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
+Write at 0x00c00011a850 by goroutine 20:
+  raft.(*Raft).RequestVote()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:146 +0x19b
+  runtime.call64()
+      /usr/local/go/src/runtime/asm_amd64.s:772 +0x42
+  reflect.Value.Call()
+      /usr/local/go/src/reflect/value.go:380 +0xb5
+  labrpc.(*Service).dispatch()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
+  labrpc.(*Server).dispatch()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
+  labrpc.(*Network).ProcessReq.func1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
 
-Previous write at 0x00c00010f310 by goroutine 10:
-  raft.(*Raft).doAsCandidate()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:351 +0x77
+Previous read at 0x00c00011a850 by goroutine 14:
   raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:440 +0x5c
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:443 +0x2f
   raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
 
-Goroutine 7 (running) created at:
-  testing.(*T).Run()
-      /usr/local/go/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /usr/local/go/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /usr/local/go/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /usr/local/go/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
+Goroutine 20 (running) created at:
+  labrpc.(*Network).ProcessReq()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
+  labrpc.MakeNetwork.func1.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
 
-Goroutine 10 (running) created at:
+Goroutine 14 (running) created at:
   raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
   raft.(*config).start1()
       /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
   raft.make_config()
@@ -49,185 +41,25 @@ Goroutine 10 (running) created at:
   testing.(*T).Run.gowrap1()
       /usr/local/go/src/testing/testing.go:1742 +0x44
 ==================
-==================
-WARNING: DATA RACE
-Read at 0x00c00010f2e0 by goroutine 7:
-  raft.(*Raft).GetState()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:30 +0xd9
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00010f2e0 by goroutine 10:
-  raft.(*Raft).doAsFollower()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:343 +0x159
-  raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:438 +0x68
-  raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
-
-Goroutine 7 (running) created at:
-  testing.(*T).Run()
-      /usr/local/go/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /usr/local/go/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /usr/local/go/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /usr/local/go/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 10 (running) created at:
-  raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
-  raft.(*config).start1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:24 +0x44
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
-==================
---- FAIL: TestInitialElection2A (5.02s)
-    config.go:284: expected one leader, got none
+  ... Passed
+--- FAIL: TestInitialElection2A (2.50s)
     testing.go:1398: race detected during execution of test
 Test (2A): election after network failure ...
 ==================
 WARNING: DATA RACE
-Write at 0x00c00010f2e0 by goroutine 484:
-  raft.(*Raft).RequestVote()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:142 +0x19b
-  runtime.call64()
-      /usr/local/go/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /usr/local/go/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Previous read at 0x00c00010f2e0 by goroutine 10:
+Write at 0x00c00020db00 by goroutine 295:
+  raft.(*Raft).doAsFollower()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:351 +0x159
   raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:435 +0x2f
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:446 +0x68
   raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
 
-Goroutine 484 (running) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-
-Goroutine 10 (running) created at:
-  raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
-  raft.(*config).start1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:24 +0x44
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
-==================
-==================
-WARNING: DATA RACE
-Write at 0x00c00010f2e0 by goroutine 494:
-  raft.(*Raft).sendRequestVote()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:173 +0x364
-  raft.(*Raft).sendVoteRequests.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:381 +0x8f
-
-Previous read at 0x00c00010f2e0 by goroutine 10:
-  raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:435 +0x2f
-  raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
-
-Goroutine 494 (running) created at:
-  raft.(*Raft).sendVoteRequests()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:381 +0x2bc
-  raft.(*Raft).doAsCandidate.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:357 +0x33
-
-Goroutine 10 (running) created at:
-  raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
-  raft.(*config).start1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:24 +0x44
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
-==================
-==================
-WARNING: DATA RACE
-Write at 0x00c00010f2e0 by goroutine 523:
-  raft.(*Raft).RequestVote()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:152 +0x3e9
-  runtime.call64()
-      /usr/local/go/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /usr/local/go/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Previous read at 0x00c00010f2e0 by goroutine 10:
-  raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:435 +0x2f
-  raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
-
-Goroutine 523 (running) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-
-Goroutine 10 (running) created at:
-  raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
-  raft.(*config).start1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:24 +0x44
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c0002e38c0 by goroutine 485:
+Previous read at 0x00c00020db00 by goroutine 290:
   raft.(*Raft).GetState()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:94 +0x2b4
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:99 +0xb3
   raft.(*config).checkOneLeader()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x23e
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x29a
   raft.TestReElection2A()
       /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:50 +0xf8
   testing.tRunner()
@@ -235,15 +67,21 @@ Read at 0x00c0002e38c0 by goroutine 485:
   testing.(*T).Run.gowrap1()
       /usr/local/go/src/testing/testing.go:1742 +0x44
 
-Previous write at 0x00c0002e38c0 by goroutine 488:
-  raft.(*Raft).doAsCandidate()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:351 +0x77
-  raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:440 +0x5c
-  raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
+Goroutine 295 (running) created at:
+  raft.Make()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
+  raft.(*config).start1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
+  raft.make_config()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:45 +0x44
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
 
-Goroutine 485 (running) created at:
+Goroutine 290 (running) created at:
   testing.(*T).Run()
       /usr/local/go/src/testing/testing.go:1742 +0x825
   testing.runTests.func1()
@@ -256,10 +94,24 @@ Goroutine 485 (running) created at:
       /usr/local/go/src/testing/testing.go:2027 +0xf17
   main.main()
       _testmain.go:79 +0x2bd
+==================
+==================
+WARNING: DATA RACE
+Read at 0x00c00020d960 by goroutine 293:
+  raft.(*Raft).stateLoop()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:443 +0x2f
+  raft.Make.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
 
-Goroutine 488 (running) created at:
+Previous write at 0x00c00020d960 by goroutine 555:
+  raft.(*Raft).sendAppendEntries()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:275 +0x249
+  raft.(*Raft).sendEntriesToPeer.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:436 +0xcb
+
+Goroutine 293 (running) created at:
   raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
   raft.(*config).start1()
       /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
   raft.make_config()
@@ -270,30 +122,50 @@ Goroutine 488 (running) created at:
       /usr/local/go/src/testing/testing.go:1689 +0x21e
   testing.(*T).Run.gowrap1()
       /usr/local/go/src/testing/testing.go:1742 +0x44
+
+Goroutine 555 (finished) created at:
+  raft.(*Raft).sendEntriesToPeer()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:436 +0x551
+  raft.(*Raft).doAsLeader.func1.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:414 +0x44
 ==================
 ==================
 WARNING: DATA RACE
-Read at 0x00c0002e3890 by goroutine 485:
+Write at 0x00c00020dca0 by goroutine 297:
+  raft.(*Raft).doAsFollower()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:351 +0x159
+  raft.(*Raft).stateLoop()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:446 +0x68
+  raft.Make.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
+
+Previous read at 0x00c00020dca0 by goroutine 290:
   raft.(*Raft).GetState()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:96 +0x2cf
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:99 +0xb3
   raft.(*config).checkOneLeader()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x23e
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x29a
   raft.TestReElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:50 +0xf8
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:59 +0x139
   testing.tRunner()
       /usr/local/go/src/testing/testing.go:1689 +0x21e
   testing.(*T).Run.gowrap1()
       /usr/local/go/src/testing/testing.go:1742 +0x44
 
-Previous write at 0x00c0002e3890 by goroutine 488:
-  raft.(*Raft).doAsFollower()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:343 +0x159
-  raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:438 +0x68
-  raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
+Goroutine 297 (running) created at:
+  raft.Make()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
+  raft.(*config).start1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
+  raft.make_config()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:45 +0x44
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
 
-Goroutine 485 (running) created at:
+Goroutine 290 (running) created at:
   testing.(*T).Run()
       /usr/local/go/src/testing/testing.go:1742 +0x825
   testing.runTests.func1()
@@ -306,60 +178,10 @@ Goroutine 485 (running) created at:
       /usr/local/go/src/testing/testing.go:2027 +0xf17
   main.main()
       _testmain.go:79 +0x2bd
-
-Goroutine 488 (running) created at:
-  raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
-  raft.(*config).start1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
 ==================
-==================
-WARNING: DATA RACE
-Write at 0x00c00010f2e0 by goroutine 10:
-  raft.(*Raft).doAsFollower()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:343 +0x159
-  raft.(*Raft).stateLoop()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:438 +0x68
-  raft.Make.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x33
-
-Previous read at 0x00c00010f2e0 by goroutine 493:
-  raft.(*Raft).sendRequestVote()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:178 +0x207
-  raft.(*Raft).sendVoteRequests.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:381 +0x8f
-
-Goroutine 10 (running) created at:
-  raft.Make()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:489 +0x53c
-  raft.(*config).start1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestInitialElection2A()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:24 +0x44
-  testing.tRunner()
-      /usr/local/go/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /usr/local/go/src/testing/testing.go:1742 +0x44
-
-Goroutine 493 (finished) created at:
-  raft.(*Raft).sendVoteRequests()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:381 +0x2bc
-  raft.(*Raft).doAsCandidate.gowrap1()
-      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:357 +0x33
-==================
---- FAIL: TestReElection2A (5.01s)
-    config.go:284: expected one leader, got none
+  ... Passed
+--- FAIL: TestReElection2A (4.50s)
     testing.go:1398: race detected during execution of test
 FAIL
 exit status 1
-FAIL	raft	10.058s
+FAIL	raft	7.030s
