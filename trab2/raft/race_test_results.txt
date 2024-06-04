@@ -1,99 +1,45 @@
 Test (2A): initial election ...
 ==================
 WARNING: DATA RACE
-Read at 0x00c00011f3e0 by goroutine 7:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:94 +0x2b4
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestInitialElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:30 +0xd9
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00011f3e0 by goroutine 22:
+Write at 0x00c00011a850 by goroutine 20:
   raft.(*Raft).RequestVote()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:140 +0x17e
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:146 +0x19b
   runtime.call64()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/runtime/asm_amd64.s:772 +0x42
+      /usr/local/go/src/runtime/asm_amd64.s:772 +0x42
   reflect.Value.Call()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/reflect/value.go:380 +0xb5
+      /usr/local/go/src/reflect/value.go:380 +0xb5
   labrpc.(*Service).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
   labrpc.(*Server).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
   labrpc.(*Network).ProcessReq.func1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
 
-Goroutine 7 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
+Previous read at 0x00c00011a850 by goroutine 14:
+  raft.(*Raft).stateLoop()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:443 +0x2f
+  raft.Make.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
 
-Goroutine 22 (finished) created at:
+Goroutine 20 (running) created at:
   labrpc.(*Network).ProcessReq()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
   labrpc.MakeNetwork.func1.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c00011f3b0 by goroutine 7:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
+
+Goroutine 14 (running) created at:
+  raft.Make()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
+  raft.(*config).start1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
+  raft.make_config()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
   raft.TestInitialElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:30 +0xd9
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:24 +0x44
   testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
   testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00011f3b0 by goroutine 22:
-  raft.(*Raft).RequestVote()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:142 +0x19b
-  runtime.call64()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Goroutine 7 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 22 (finished) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
+      /usr/local/go/src/testing/testing.go:1742 +0x44
 ==================
   ... Passed
 --- FAIL: TestInitialElection2A (2.50s)
@@ -101,545 +47,141 @@ Goroutine 22 (finished) created at:
 Test (2A): election after network failure ...
 ==================
 WARNING: DATA RACE
-Read at 0x00c000227d70 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:50 +0xf8
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c000227d70 by goroutine 248:
-  raft.(*Raft).RequestVote()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:142 +0x19b
-  runtime.call64()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 248 (finished) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c00038c060 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:94 +0x2b4
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:50 +0xf8
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00038c060 by goroutine 247:
-  raft.(*Raft).RequestVote()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:140 +0x17e
-  runtime.call64()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 247 (finished) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c00038c1d0 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:50 +0xf8
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00038c1d0 by goroutine 225:
-  raft.(*Raft).becomeLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:392 +0x44
-  raft.(*Raft).doAsCandidate()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:367 +0x2d8
-  raft.(*Raft).stateLoop()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:438 +0x86
-  raft.Make.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x33
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 225 (running) created at:
-  raft.Make()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x53c
-  raft.(*config).start1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-==================
-==================
-WARNING: DATA RACE
-Write at 0x00c000227da0 by goroutine 221:
-  raft.(*Raft).doAsCandidate()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:355 +0x77
-  raft.(*Raft).stateLoop()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:438 +0x86
-  raft.Make.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x33
-
-Previous read at 0x00c000227da0 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:94 +0x2b4
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:50 +0xf8
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Goroutine 221 (running) created at:
-  raft.Make()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x53c
-  raft.(*config).start1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c000227d70 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:54 +0x11a
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c000227d70 by goroutine 221:
-  raft.(*Raft).becomeLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:392 +0x44
-  raft.(*Raft).doAsCandidate()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:367 +0x2d8
-  raft.(*Raft).stateLoop()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:438 +0x86
-  raft.Make.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x33
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 221 (running) created at:
-  raft.Make()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x53c
-  raft.(*config).start1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c000227da0 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:94 +0x2b4
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:59 +0x139
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c000227da0 by goroutine 503:
-  raft.(*Raft).sendAppendEntries()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:270 +0x224
-  raft.(*Raft).sendEntriesToPeer.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:426 +0xcb
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 503 (finished) created at:
-  raft.(*Raft).sendEntriesToPeer()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:426 +0x551
-  raft.(*Raft).doAsLeader.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:405 +0x44
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c000227d70 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:59 +0x139
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c000227d70 by goroutine 514:
-  raft.(*Raft).RequestVote()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:152 +0x3e9
-  runtime.call64()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 514 (finished) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c00038c030 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:59 +0x139
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00038c030 by goroutine 223:
-  raft.(*Raft).becomeLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:392 +0x44
-  raft.(*Raft).doAsCandidate()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:367 +0x2d8
-  raft.(*Raft).stateLoop()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:438 +0x86
-  raft.Make.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x33
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 223 (running) created at:
-  raft.Make()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x53c
-  raft.(*config).start1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c00038c1d0 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x2cf
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:59 +0x139
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c00038c1d0 by goroutine 513:
-  raft.(*Raft).RequestVote()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:142 +0x19b
-  runtime.call64()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/runtime/asm_amd64.s:772 +0x42
-  reflect.Value.Call()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/reflect/value.go:380 +0xb5
-  labrpc.(*Service).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:439 +0x4cd
-  labrpc.(*Server).dispatch()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:363 +0x24e
-  labrpc.(*Network).ProcessReq.func1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:208 +0x9c
-
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
-  testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
-  main.main()
-      _testmain.go:79 +0x2bd
-
-Goroutine 513 (finished) created at:
-  labrpc.(*Network).ProcessReq()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:207 +0x26a
-  labrpc.MakeNetwork.func1.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/labrpc/labrpc.go:132 +0x9c
-==================
-==================
-WARNING: DATA RACE
-Read at 0x00c000227d70 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:96 +0x131
-  raft.(*config).checkNoLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:308 +0xbb
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:66 +0x1b1
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c000227d70 by goroutine 221:
+Write at 0x00c00020db00 by goroutine 295:
   raft.(*Raft).doAsFollower()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:347 +0x159
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:351 +0x159
   raft.(*Raft).stateLoop()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:436 +0x92
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:446 +0x68
   raft.Make.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x33
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
 
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
+Previous read at 0x00c00020db00 by goroutine 290:
+  raft.(*Raft).GetState()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:99 +0xb3
+  raft.(*config).checkOneLeader()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x29a
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:50 +0xf8
   testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
+
+Goroutine 295 (running) created at:
+  raft.Make()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
+  raft.(*config).start1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
+  raft.make_config()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:45 +0x44
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
+
+Goroutine 290 (running) created at:
+  testing.(*T).Run()
+      /usr/local/go/src/testing/testing.go:1742 +0x825
+  testing.runTests.func1()
+      /usr/local/go/src/testing/testing.go:2161 +0x85
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
   testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
+      /usr/local/go/src/testing/testing.go:2159 +0x8be
   testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
+      /usr/local/go/src/testing/testing.go:2027 +0xf17
   main.main()
       _testmain.go:79 +0x2bd
-
-Goroutine 221 (running) created at:
-  raft.Make()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x53c
-  raft.(*config).start1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
 ==================
 ==================
 WARNING: DATA RACE
-Read at 0x00c000227da0 by goroutine 218:
-  raft.(*Raft).GetState()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:94 +0x2b4
-  raft.(*config).checkOneLeader()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:264 +0x23e
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:70 +0x1d1
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
-
-Previous write at 0x00c000227da0 by goroutine 221:
-  raft.(*Raft).doAsCandidate()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:355 +0x77
+Read at 0x00c00020d960 by goroutine 293:
   raft.(*Raft).stateLoop()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:438 +0x86
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:443 +0x2f
   raft.Make.gowrap1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x33
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
 
-Goroutine 218 (running) created at:
-  testing.(*T).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x825
-  testing.runTests.func1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2161 +0x85
+Previous write at 0x00c00020d960 by goroutine 555:
+  raft.(*Raft).sendAppendEntries()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:275 +0x249
+  raft.(*Raft).sendEntriesToPeer.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:436 +0xcb
+
+Goroutine 293 (running) created at:
+  raft.Make()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
+  raft.(*config).start1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
+  raft.make_config()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:45 +0x44
   testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
+
+Goroutine 555 (finished) created at:
+  raft.(*Raft).sendEntriesToPeer()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:436 +0x551
+  raft.(*Raft).doAsLeader.func1.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:414 +0x44
+==================
+==================
+WARNING: DATA RACE
+Write at 0x00c00020dca0 by goroutine 297:
+  raft.(*Raft).doAsFollower()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:351 +0x159
+  raft.(*Raft).stateLoop()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:446 +0x68
+  raft.Make.gowrap1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x33
+
+Previous read at 0x00c00020dca0 by goroutine 290:
+  raft.(*Raft).GetState()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:99 +0xb3
+  raft.(*config).checkOneLeader()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:264 +0x29a
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:59 +0x139
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
+
+Goroutine 297 (running) created at:
+  raft.Make()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/raft.go:497 +0x53c
+  raft.(*config).start1()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:177 +0x9f7
+  raft.make_config()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/config.go:63 +0x750
+  raft.TestReElection2A()
+      /home/igor/Documentos/UFF/Graduacao/8_periodo/SD/trabSD/trab2/raft/test_test.go:45 +0x44
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
+  testing.(*T).Run.gowrap1()
+      /usr/local/go/src/testing/testing.go:1742 +0x44
+
+Goroutine 290 (running) created at:
+  testing.(*T).Run()
+      /usr/local/go/src/testing/testing.go:1742 +0x825
+  testing.runTests.func1()
+      /usr/local/go/src/testing/testing.go:2161 +0x85
+  testing.tRunner()
+      /usr/local/go/src/testing/testing.go:1689 +0x21e
   testing.runTests()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2159 +0x8be
+      /usr/local/go/src/testing/testing.go:2159 +0x8be
   testing.(*M).Run()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:2027 +0xf17
+      /usr/local/go/src/testing/testing.go:2027 +0xf17
   main.main()
       _testmain.go:79 +0x2bd
-
-Goroutine 221 (running) created at:
-  raft.Make()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/raft.go:487 +0x53c
-  raft.(*config).start1()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:177 +0x9f7
-  raft.make_config()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/config.go:63 +0x750
-  raft.TestReElection2A()
-      /home/caiovelp/Projects/College/trabSD/trab2/raft/test_test.go:45 +0x44
-  testing.tRunner()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1689 +0x21e
-  testing.(*T).Run.gowrap1()
-      /home/caiovelp/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.22.3.linux-amd64/src/testing/testing.go:1742 +0x44
 ==================
   ... Passed
 --- FAIL: TestReElection2A (4.50s)
     testing.go:1398: race detected during execution of test
 FAIL
 exit status 1
-FAIL	raft	7.018s
+FAIL	raft	7.030s

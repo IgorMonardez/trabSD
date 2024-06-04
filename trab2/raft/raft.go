@@ -90,9 +90,10 @@ type AppendEntriesReply struct {
 func (rf *Raft) GetState() (int, bool) {
 	var term int
 	var isLeader bool
-	// TODO: CONDICAO DE CORRIDA
+	rf.mu.Lock()
+	defer rf.mu.Unlock()
+
 	term = rf.currentTerm
-	// TODO: CONDICAO DE CORRIDA
 	isLeader = rf.state == StateLeader
 
 	return term, isLeader
