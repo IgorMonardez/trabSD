@@ -17,7 +17,7 @@ const (
 )
 
 const (
-	DefaultElectionTimeoutMin   = 100
+	DefaultElectionTimeoutMin   = 150
 	DefaultElectionTimeoutMax   = 350
 	DefaultElectionTimeoutRange = DefaultElectionTimeoutMax - DefaultElectionTimeoutMin
 	DefaultHeartbeatInterval    = 100 * time.Millisecond
@@ -159,6 +159,7 @@ func (rf *Raft) sendRequestVote(server int, args RequestVoteArgs, reply *Request
 	ok := rf.peers[server].Call("Raft.RequestVote", args, reply)
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
+	defer rf.persist()
 
 	if ok && reply.Term > rf.currentTerm {
 		rf.currentTerm = reply.Term
@@ -166,7 +167,6 @@ func (rf *Raft) sendRequestVote(server int, args RequestVoteArgs, reply *Request
 		rf.votedFor = -1
 		rf.persist()
 	}
-
 	if ok && rf.state == StateCandidate && reply.VoteGranted {
 		rf.votes++
 		if rf.votes > len(rf.peers)/2 {
@@ -449,7 +449,6 @@ func Make(peers []*labrpc.ClientEnd, me int, persister *Persister, applyCh chan 
 		commitIndex:        0,
 		lastApplied:        0,
 	}
-
 	rand.Seed(time.Now().UnixNano() + int64(rf.me))
 	go rf.stateLoop()
 
