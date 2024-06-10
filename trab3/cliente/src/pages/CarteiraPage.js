@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import WalletResume from "../components/WalletResume";
 
 import "../styles/CarteiraPage.css";
+import ExpenseList from "../components/ExpenseList";
 
 const CarteiraPage = () => {
     const { id } = useParams();
@@ -20,6 +21,7 @@ const CarteiraPage = () => {
             <Navbar carteiraId={id}/>
             <h1>Carteira {id}</h1>
             <WalletResume walletId={id}/>
+            <ExpenseList walletId={id}/>
         </body>
         </html>
     )
