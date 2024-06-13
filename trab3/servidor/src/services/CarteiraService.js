@@ -1,8 +1,9 @@
 const {Carteira} = require("../models/Associations");
+const Observer = require("./Observer");
 
-class CarteiraService {
+class CarteiraService extends Observer {
     constructor() {
-
+        super();
     }
 
     async createCarteira(){
@@ -13,6 +14,26 @@ class CarteiraService {
 
     async getCarteiraById(carteiraId) {
         return await Carteira.findByPk(carteiraId);
+    }
+
+    async updateSaldoByAmount(carteiraId, valor, addAmount) {
+        let carteira = await this.getCarteiraById(carteiraId);
+        if(!carteira) {
+            throw new Error("Carteira não encontrada.");
+        }
+
+        let saldo = addAmount ? (parseFloat(carteira.saldo) + parseFloat(valor)) : (parseFloat(carteira.saldo) - parseFloat(valor));
+        return await carteira.update(
+            {saldo}
+        )
+    }
+
+    async update(carteiraId, valor, addAmount) {
+        try {
+            await this.updateSaldoByAmount(carteiraId, valor, addAmount);
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
 

@@ -5,6 +5,7 @@ const { sequelize } = require('./config/db');
 
 const walletRoutes = require('./routes/carteiraRoutes');
 const categoryRoutes = require('./routes/categoriaRoutes');
+const expenseRoutes = require('./routes/despesaRoutes');
 
 const app = express();
 app.use(cors());
@@ -25,6 +26,7 @@ sequelize.sync()
 // Rotas
 app.use('/wallets', walletRoutes);
 app.use('/category', categoryRoutes);
+app.use('/expense', expenseRoutes);
 
 // Iniciar o servidor
 app.listen(port, () => {
