@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Cash } from 'react-bootstrap-icons'
 
 import Form from 'react-bootstrap/Form';
@@ -6,12 +6,14 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import ConfigCategoryButton from "./ConfigCategoryButton";
+import CategoryButton from "./CategoryButton";
 
 
 import "../styles/WalletResume.css";
 
 const WalletResume = ({ walletId }) => {
+    const [saldo, setSaldo] = useState(null);
+
     const [despesaCategoriaOpt, setdespesaCategoriaOpt] = useState([]);
     const [showReceitaModal, setShowReceitaModal] = useState(false);
     const [showDespesaModal, setShowDespesaModal] = useState(false);
@@ -47,6 +49,31 @@ const WalletResume = ({ walletId }) => {
         console.log('Submit despesa form');
     }
 
+    const getSaldo = () => {
+        fetch(`http://localhost:3000/wallets/getCarteiraById/${walletId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(async (response) => {
+                let responseBody = await response.json();
+                if(response.ok)
+                    setSaldo(responseBody.saldo);
+
+            })
+            .catch((error) => {
+                console.error(
+                    "Erro ao recuperar informações da carteira do usuário: ",
+                    error
+                );
+            });
+    }
+
+    useEffect(() => {
+        getSaldo();
+    }, [walletId]);
+
     return (
         <div className="container rounded-4">
             <div className="row">
@@ -54,10 +81,10 @@ const WalletResume = ({ walletId }) => {
                     <div className="row">
                         <div className="col">
                             <h3 className="pt-3">Saldo</h3>
-                            <h4 className="saldo">R$ 00.00</h4>
+                            <h4 className={`saldo-positivo ${saldo >= 0 ? 'saldo-positivo' : 'saldo-negativo'}`}>R$ {saldo}</h4>
                         </div>
                     </div>
-                    <div className="row mt-5">
+                    <div className="row mt-4">
                         <div className="col">
                             <h5>Receita</h5>
                             <h5 className="receita-mensal">R$ 00.00</h5>
@@ -256,7 +283,7 @@ const WalletResume = ({ walletId }) => {
                         </Modal.Body>
                     </Modal>
 
-                    <ConfigCategoryButton carteiraId={walletId}/>
+                    <CategoryButton walletId={walletId}/>
 
                 </div>
             </div>

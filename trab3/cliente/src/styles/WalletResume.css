@@ -3,21 +3,27 @@
     background-color: white;
 }
 
-.saldo {
+.saldo-positivo {
     margin-left: 50px;
     font-weight: bold;
     color: #13714c;
 }
 
+.saldo-negativo {
+    margin-left: 50px;
+    font-weight: bold;
+    color: #FF0000;
+}
+
 .receita-mensal {
     margin-left: 42px;
-    color: #3ab67d;
+    color: #13714c;
     font-weight: bold;
 }
 
 .despesa-mensal {
     margin-left: 53px;
-    color: red;
+    color: #FF0000;
     font-weight: bold;
 }
 
