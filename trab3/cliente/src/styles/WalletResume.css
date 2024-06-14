@@ -15,13 +15,13 @@
     color: #FF0000;
 }
 
-.receita-mensal {
+.receita-value {
     margin-left: 42px;
     color: #13714c;
     font-weight: bold;
 }
 
-.despesa-mensal {
+.despesa-value {
     margin-left: 53px;
     color: #FF0000;
     font-weight: bold;

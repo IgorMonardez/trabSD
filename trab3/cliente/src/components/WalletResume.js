@@ -13,6 +13,7 @@ import "../styles/WalletResume.css";
 
 const WalletResume = ({ walletId }) => {
     const [saldo, setSaldo] = useState(null);
+    const [despesaTotal, setDespesaTotal] = useState(0.00);
 
     const [despesaCategoriaOpt, setdespesaCategoriaOpt] = useState([]);
     const [showReceitaModal, setShowReceitaModal] = useState(false);
@@ -45,8 +46,55 @@ const WalletResume = ({ walletId }) => {
         console.log('Submit receita form');
     }
 
-    const handleSubmitDespesaForm = () => {
-        console.log('Submit despesa form');
+    const handleSubmitDespesaForm = (e) => {
+        e.preventDefault();
+
+        const { tipo, date, tag, descricao, origem, valor,
+            carteiraId, categoriaId, parcela,nomeCobranca } = despesaFormData;
+
+
+        let data = JSON.stringify({
+            "tipo": tipo,
+            "data": date,
+            "tag": tag,
+            "descricao": descricao,
+            "origem": origem,
+            "valor": valor,
+            "carteiraId": walletId,
+            "categoriaId": categoriaId,
+            "parcela": parcela,
+            "nomeCobranca": nomeCobranca
+        });
+
+        fetch(`http://localhost:3000/expense/createDespesa/${walletId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        })
+            .then(async (response) => {
+                let responseBody = await response.json();
+                console.log("Response: ", responseBody);
+                if(response.ok) {
+                    console.log("Despesa criada com sucesso.");
+                    setDespesaFormData({
+                        tipo: "Fixa",
+                        data: "",
+                        tag: "",
+                        descricao: "",
+                        origem: "",
+                        valor: 0.00,
+                        carteiraId: "",
+                        categoriaId: "",
+                        parcela: 1,
+                        nomeCobranca: ""
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao recuperar informações da carteira do usuário: ', error);
+            })
     }
 
     const getSaldo = () => {
@@ -70,7 +118,46 @@ const WalletResume = ({ walletId }) => {
             });
     }
 
+    const getDespesaTotal = () => {
+        fetch(`http://localhost:3000/expense/${walletId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(async (response) => {
+                let responseBody = await response.json();
+                if(response.ok) {
+                    const total = responseBody.reduce((sum, despesa) => sum + parseFloat(despesa.valor), 0);
+                    setDespesaTotal(total);
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao recuperar informações de despesa do usuário: ', error);
+            });
+    }
+
+    const getExpensesCategory = () => {
+        fetch(`http://localhost:3000/category/getCategoriasByWalletId/${walletId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(async (response) => {
+                let responseBody = await response.json();
+                if (response.ok) {
+                    setdespesaCategoriaOpt(responseBody);
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao recuperar informações de categoria de despesa do usuário: ', error);
+            });
+    }
+
     useEffect(() => {
+        getExpensesCategory();
+        getDespesaTotal();
         getSaldo();
     }, [walletId]);
 
@@ -87,11 +174,11 @@ const WalletResume = ({ walletId }) => {
                     <div className="row mt-4">
                         <div className="col">
                             <h5>Receita</h5>
-                            <h5 className="receita-mensal">R$ 00.00</h5>
+                            <h5 className="receita-value">R$ 00.00</h5>
                         </div>
                         <div className="col">
-                            <h5>Despesa Mensal</h5>
-                            <h5 className="despesa-mensal">R$ 00.00</h5>
+                            <h5>Despesa</h5>
+                            <h5 className="despesa-value">R$ {despesaTotal.toFixed(2)}</h5>
                         </div>
                     </div>
                 </div>
@@ -196,8 +283,6 @@ const WalletResume = ({ walletId }) => {
                                     <Form.Control
                                         type="text"
                                         placeholder="Identifica de quem é a despesa (Mãe, Própria, Pai)"
-                                        defaultValue="name"
-                                        value="name"
                                         onChange={(e) => setDespesaFormData({...despesaFormData, tag: e.target.value})}
                                     />
                                 </Form.Group>
@@ -276,8 +361,8 @@ const WalletResume = ({ walletId }) => {
                                 </Form.Group>
 
 
-                                <Button variant="primary" type="submit">
-                                    Submit
+                                <Button variant="success" type="submit">
+                                    Criar Despesa
                                 </Button>
                             </Form>
                         </Modal.Body>
