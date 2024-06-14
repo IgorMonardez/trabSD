@@ -23,7 +23,14 @@ class ReceitaService extends Subject {
         this.notifyObservers(carteiraId, valor, true);
     }
 
-    async editReceita(data, descricao, valor, id, carteiraId) {
+    async editReceita(data, descricao, valor, id, carteiraId, carteiraService) {
+        let receita = await this.getReceitaById(id, carteiraId);
+        if (!receita) {
+            throw new Error("Receita não encontrada.");
+        }
+
+        let oldValor = receita.valor;
+
         let updatedReceita = await Receita.update(
             { data, descricao, valor },
             { where: { id, carteiraId } }
@@ -31,6 +38,17 @@ class ReceitaService extends Subject {
         if(updatedReceita[0] !== 1) {
             throw new Error("Receita não encontrada.");
         }
+
+        let diffValor = valor - oldValor;
+        let isAdd = diffValor >= 0;
+
+        let carteira = await carteiraService.getCarteiraById(carteiraId);
+        if(!carteira) {
+            throw new Error("Carteira não encontrada.");
+        }
+
+        this.addObserver(carteiraService);
+        this.notifyObservers(carteiraId, Math.abs(diffValor), isAdd);
     }
 
     async deleteReceita( id, carteiraId, carteiraService) {

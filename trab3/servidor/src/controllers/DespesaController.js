@@ -43,8 +43,10 @@ class DespesaController {
             const { carteiraId } = req.params;
             const { id, tipo, data, tag, descricao, origem, valor, categoriaId } = req.body;
 
+            let carteiraService = new CarteiraService();
+
             await this.despesaService.editDespesa(
-                tipo, data, tag, descricao, origem, valor, categoriaId, id, carteiraId
+                tipo, data, tag, descricao, origem, valor, categoriaId, id, carteiraId, carteiraService
             )
                 .then(() => {
                     res.status(200).json({ message: 'Despesa atualizada com sucesso.' });

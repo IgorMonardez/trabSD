@@ -50,7 +50,14 @@ class DespesaService extends Subject {
         }
     }
 
-    async editDespesa(tipo, data, tag, descricao, origem, valor, categoriaId, id, carteiraId) {
+    async editDespesa(tipo, data, tag, descricao, origem, valor, categoriaId, id, carteiraId, carteiraService) {
+        let despesa = await this.getDespesaById(id, carteiraId);
+        if (!despesa) {
+            throw new Error("Despesa não encontrada.");
+        }
+
+        let oldValor = despesa.valor;
+
         let updatedDespesa = await Despesa.update(
             { tipo, data, tag, descricao, origem, valor, categoriaId },
             { where: { id, carteiraId } }
@@ -59,6 +66,17 @@ class DespesaService extends Subject {
         if (updatedDespesa[0] !== 1) {
             throw new Error('Despesa não encontrada.');
         }
+
+        let diffValor = valor - oldValor;
+        let isAdd = diffValor >= 0;
+
+        let carteira = await carteiraService.getCarteiraById(carteiraId);
+        if(!carteira) {
+            throw new Error("Carteira não encontrada.");
+        }
+
+        this.addObserver(carteiraService);
+        this.notifyObservers(carteiraId, Math.abs(diffValor), isAdd);
     }
 
     async deleteDespesa(id, carteiraId, carteiraService) {

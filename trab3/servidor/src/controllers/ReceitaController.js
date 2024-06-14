@@ -40,7 +40,9 @@ class ReceitaController {
             const { carteiraId } = req.params;
             const { id, data, descricao, valor } = req.body;
 
-            await this.receitaService.editReceita(data, descricao, valor, id, carteiraId)
+            let carteiraService = new CarteiraService();
+
+            await this.receitaService.editReceita(data, descricao, valor, id, carteiraId, carteiraService)
                 .then(() => {
                     res.status(200).json({ message: 'Receita atualizada com sucesso.' });
                 })
