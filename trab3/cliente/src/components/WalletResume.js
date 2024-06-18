@@ -14,6 +14,7 @@ import "../styles/WalletResume.css";
 const WalletResume = ({ walletId }) => {
     const [saldo, setSaldo] = useState(null);
     const [despesaTotal, setDespesaTotal] = useState(0.00);
+    const [receitaTotal, setReceitaTotal] = useState(0.00);
 
     const [despesaCategoriaOpt, setdespesaCategoriaOpt] = useState([]);
     const [showReceitaModal, setShowReceitaModal] = useState(false);
@@ -42,8 +43,42 @@ const WalletResume = ({ walletId }) => {
     const handleCloseDespesaModal = () => setShowDespesaModal(false);
     const handleShowDespesaModal = () => setShowDespesaModal(true);
 
-    const handleSubmitReceitaForm = () => {
-        console.log('Submit receita form');
+    const handleSubmitReceitaForm = (e) => {
+        e.preventDefault();
+
+        const { date, description, amount } = receitaFormData;
+
+
+        let data = JSON.stringify({
+            "carteiraId": walletId,
+            "data": date,
+            "descricao": description,
+            "valor": amount
+        });
+
+        console.log(data);
+
+        fetch('http://localhost:3000/credit/createReceita', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        })
+            .then(async (response) => {
+                let responseBody = await response.json();
+                console.log("Response: ", responseBody);
+                if(response.ok) {
+                    setReceitaFormData({
+                        date: "",
+                        description: "",
+                        amount: 0.00,
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao recuperar informações da carteira do usuário: ', error);
+            })
     }
 
     const handleSubmitDespesaForm = (e) => {
@@ -137,6 +172,25 @@ const WalletResume = ({ walletId }) => {
             });
     }
 
+    const getReceitaTotal = () => {
+        fetch(`http://localhost:3000/credit/${walletId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(async (response) => {
+                let responseBody = await response.json();
+                if(response.ok) {
+                    const total = responseBody.reduce((sum, receita) => sum + parseFloat(receita.valor), 0);
+                    setReceitaTotal(total);
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao recuperar informações de receita do usuário: ', error);
+            });
+    }
+
     const getExpensesCategory = () => {
         fetch(`http://localhost:3000/category/getCategoriasByWalletId/${walletId}`, {
             method: 'GET',
@@ -158,6 +212,7 @@ const WalletResume = ({ walletId }) => {
     useEffect(() => {
         getExpensesCategory();
         getDespesaTotal();
+        getReceitaTotal();
         getSaldo();
     }, [walletId]);
 
@@ -174,7 +229,7 @@ const WalletResume = ({ walletId }) => {
                     <div className="row mt-4">
                         <div className="col">
                             <h5>Receita</h5>
-                            <h5 className="receita-value">R$ 00.00</h5>
+                            <h5 className="receita-value">R$ {receitaTotal.toFixed(2)}</h5>
                         </div>
                         <div className="col">
                             <h5>Despesa</h5>
@@ -231,8 +286,8 @@ const WalletResume = ({ walletId }) => {
                                 </Form.Group>
 
 
-                                <Button variant="primary" type="submit">
-                                    Adicionar
+                                <Button variant="success" type="submit">
+                                    Criar Receita
                                 </Button>
                             </Form>
                         </Modal.Body>
