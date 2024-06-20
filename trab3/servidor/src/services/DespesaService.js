@@ -76,7 +76,7 @@ class DespesaService extends Subject {
         }
 
         this.addObserver(carteiraService);
-        this.notifyObservers(carteiraId, Math.abs(diffValor), isAdd);
+        this.notifyObservers(carteiraId, Math.abs(diffValor), !isAdd);
     }
 
     async deleteDespesa(id, carteiraId, carteiraService) {
