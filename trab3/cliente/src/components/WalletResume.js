@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import CategoryButton from "./CategoryButton";
+import RoscaCategoryChart from "./RoscaCategoryChart";
 
 
 import "../styles/WalletResume.css";
@@ -237,10 +238,14 @@ const WalletResume = ({ walletId }) => {
                         </div>
                     </div>
                 </div>
+                <div className="col-md-4 mt-4 d-flex justify-content-center">
+                    <RoscaCategoryChart carteiraId={walletId}/>
+                </div>
                 <div className="col-md-4 mt-4 d-flex flex-column justify-content-center align-items-center"
                      style={{marginBottom: 9}}>
                     <h4 style={{marginTop: 5}}>Acesso Rápido</h4>
-                    <Button variant="" className="d-flex justify-content-start align-items-center button-quick-access" onClick={handleShowReceitaModal}>
+                    <Button variant="" className="d-flex justify-content-start align-items-center button-quick-access"
+                            onClick={handleShowReceitaModal}>
                         <Cash className="receipt-icon"/>
                         Receita
                     </Button>
@@ -257,7 +262,7 @@ const WalletResume = ({ walletId }) => {
                                     <Form.Control
                                         type="date"
                                         value={receitaFormData.date}
-                                        onChange={(e) => setReceitaFormData({ ...receitaFormData, date: e.target.value })}
+                                        onChange={(e) => setReceitaFormData({...receitaFormData, date: e.target.value})}
                                     />
                                 </Form.Group>
 
@@ -267,9 +272,12 @@ const WalletResume = ({ walletId }) => {
                                         type="text"
                                         placeholder="Ex: Salário"
                                         value={receitaFormData.description}
-                                        onChange={(e) => setReceitaFormData({ ...receitaFormData, description: e.target.value })}
+                                        onChange={(e) => setReceitaFormData({
+                                            ...receitaFormData,
+                                            description: e.target.value
+                                        })}
                                     />
-                                </Form.Group >
+                                </Form.Group>
 
                                 <Form.Group className="mb-3">
                                     <Form.Label>Valor</Form.Label>
@@ -280,7 +288,10 @@ const WalletResume = ({ walletId }) => {
                                                       step="0.01"
                                                       placeholder="0.00"
                                                       value={receitaFormData.amount}
-                                                      onChange={(e) => setReceitaFormData({ ...receitaFormData, amount: parseFloat(e.target.value) })}
+                                                      onChange={(e) => setReceitaFormData({
+                                                          ...receitaFormData,
+                                                          amount: parseFloat(e.target.value)
+                                                      })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
@@ -293,7 +304,8 @@ const WalletResume = ({ walletId }) => {
                         </Modal.Body>
                     </Modal>
 
-                    <Button variant="" className="d-flex justify-content-start align-items-center button-quick-access" onClick={handleShowDespesaModal}>
+                    <Button variant="" className="d-flex justify-content-start align-items-center button-quick-access"
+                            onClick={handleShowDespesaModal}>
                         <Cash className="expense-icon"/>
                         Despesa
                     </Button>
@@ -308,7 +320,7 @@ const WalletResume = ({ walletId }) => {
                                     <Form.Control
                                         type="date"
                                         value={despesaFormData.date}
-                                        onChange={(e) => setDespesaFormData({ ...despesaFormData, date: e.target.value })}
+                                        onChange={(e) => setDespesaFormData({...despesaFormData, date: e.target.value})}
                                     />
                                 </Form.Group>
 
@@ -351,7 +363,10 @@ const WalletResume = ({ walletId }) => {
                                         step="1"
                                         placeholder="0"
                                         value={despesaFormData.parcela}
-                                        onChange={(e) => setDespesaFormData({...despesaFormData, parcela: parseInt(e.target.value)})}
+                                        onChange={(e) => setDespesaFormData({
+                                            ...despesaFormData,
+                                            parcela: parseInt(e.target.value)
+                                        })}
                                     />
                                 </Form.Group>
 
@@ -361,7 +376,10 @@ const WalletResume = ({ walletId }) => {
                                         type="text"
                                         placeholder="Ex: Lanche"
                                         value={despesaFormData.descricao}
-                                        onChange={(e) => setDespesaFormData({...despesaFormData, descricao: e.target.value})}
+                                        onChange={(e) => setDespesaFormData({
+                                            ...despesaFormData,
+                                            descricao: e.target.value
+                                        })}
                                     />
                                 </Form.Group>
 
@@ -371,7 +389,10 @@ const WalletResume = ({ walletId }) => {
                                         type="text"
                                         placeholder="Ex: Ifood"
                                         value={despesaFormData.nomeCobranca}
-                                        onChange={(e) => setDespesaFormData({...despesaFormData, nomeCobranca: e.target.value})}
+                                        onChange={(e) => setDespesaFormData({
+                                            ...despesaFormData,
+                                            nomeCobranca: e.target.value
+                                        })}
                                     />
                                 </Form.Group>
 
@@ -381,7 +402,10 @@ const WalletResume = ({ walletId }) => {
                                         type="text"
                                         placeholder="Ex: Cartão Inter"
                                         value={despesaFormData.origem}
-                                        onChange={(e) => setDespesaFormData({...despesaFormData, origem: e.target.value})}
+                                        onChange={(e) => setDespesaFormData({
+                                            ...despesaFormData,
+                                            origem: e.target.value
+                                        })}
                                     />
                                 </Form.Group>
 
@@ -389,7 +413,10 @@ const WalletResume = ({ walletId }) => {
                                     <Form.Label>Categoria de Despesa</Form.Label>
                                     <Form.Select
                                         value={despesaFormData.categoriaId}
-                                        onChange={(e) => setDespesaFormData({...despesaFormData, categoriaId: e.target.value})}
+                                        onChange={(e) => setDespesaFormData({
+                                            ...despesaFormData,
+                                            categoriaId: e.target.value
+                                        })}
                                     >
                                         <option disabled={true} value="">Categoria...</option>
                                         {despesaCategoriaOpt.map((option) => (
@@ -410,7 +437,10 @@ const WalletResume = ({ walletId }) => {
                                             step="0.01"
                                             placeholder="0.00"
                                             value={despesaFormData.valor}
-                                            onChange={(e) => setDespesaFormData({...despesaFormData, valor: parseFloat(e.target.value)})}
+                                            onChange={(e) => setDespesaFormData({
+                                                ...despesaFormData,
+                                                valor: parseFloat(e.target.value)
+                                            })}
                                         />
                                     </InputGroup>
                                 </Form.Group>
